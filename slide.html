@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>CRE Research Agent</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        background: #0a0a0a;
+        color: #fff;
+      }
+      .slide {
+        width: 100%;
+        aspect-ratio: 16/9;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        border-bottom: 2px solid #1a1a1a;
+        page-break-after: always;
+      }
+      .bg-dark {
+        background: #0d0d0d;
+      }
+      .bg-grid {
+        background: #0d0d0d;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 40px 40px;
+      }
+      .bg-accent {
+        background: linear-gradient(135deg, #0d1117 0%, #0f1f0f 100%);
+      }
+      .bg-bold {
+        background: linear-gradient(135deg, #000 0%, #111 100%);
+      }
+      :root {
+        --green: #00e676;
+        --card: rgba(255, 255, 255, 0.04);
+        --border: rgba(255, 255, 255, 0.08);
+      }
+      .tag {
+        display: inline-block;
+        font-size: 0.55vw;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--green);
+        border: 1px solid var(--green);
+        padding: 0.3em 0.8em;
+        border-radius: 2px;
+        margin-bottom: 1.2vw;
+      }
+      h1 {
+        font-size: 4.2vw;
+        font-weight: 900;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+      }
+      h2 {
+        font-size: 3vw;
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+      }
+      p,
+      li {
+        font-size: 1.575vw;
+        line-height: 1.65;
+        color: #aaa;
+      }
+      .detail {
+        font-size: 1.5vw;
+        color: #888;
+        line-height: 1.6;
+        max-width: 52ch;
+      }
+      .green {
+        color: var(--green);
+      }
+      .white {
+        color: #fff;
+      }
+      .pad {
+        padding: 5% 7%;
+      }
+      .center {
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      .col {
+        display: flex;
+        flex-direction: column;
+      }
+      .row {
+        display: flex;
+        flex-direction: row;
+      }
+      .gap2 {
+        gap: 2%;
+      }
+      .flex1 {
+        flex: 1;
+      }
+      .mt1 {
+        margin-top: 1vw;
+      }
+      .mt2 {
+        margin-top: 2vw;
+      }
+      .img-box {
+        background: var(--card);
+        border: 1px dashed var(--border);
+        border-radius: 0.4vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5vw;
+        color: #444;
+        font-size: 0.8vw;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      .img-box .icon {
+        font-size: 2vw;
+        opacity: 0.4;
+      }
+      .slide-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 0.4vw;
+      }
+      .p-card {
+        flex: 1;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 0.5vw;
+        padding: 3%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8vw;
+      }
+      .p-num {
+        font-size: 0.8vw;
+        font-weight: 800;
+        color: var(--green);
+        letter-spacing: 0.1em;
+      }
+      .p-title {
+        font-size: 1.1vw;
+        font-weight: 700;
+        color: #fff;
+      }
+      .p-body {
+        font-size: 1.275vw;
+        color: #888;
+        line-height: 1.5;
+      }
+      .stack-row {
+        display: flex;
+        align-items: center;
+        gap: 1%;
+        flex: 1;
+      }
+      .stack-item {
+        flex: 1;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 0.4vw;
+        padding: 3% 2%;
+        text-align: center;
+      }
+      .stack-item .s-label {
+        font-size: 0.85vw;
+        font-weight: 700;
+        color: #fff;
+      }
+      .stack-item .s-sub {
+        font-size: 0.7vw;
+        color: #555;
+        margin-top: 0.3vw;
+      }
+      .arrow {
+        font-size: 1.4vw;
+        color: #333;
+        flex-shrink: 0;
+      }
+      .win {
+        display: flex;
+        align-items: flex-start;
+        gap: 1vw;
+        margin-bottom: 0.9vw;
+      }
+      .win-dot {
+        width: 0.5vw;
+        height: 0.5vw;
+        background: var(--green);
+        border-radius: 50%;
+        margin-top: 0.5vw;
+        flex-shrink: 0;
+      }
+      .slide-num {
+        position: absolute;
+        bottom: 2.5%;
+        right: 3%;
+        font-size: 0.65vw;
+        color: #333;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+      }
+      .presenter {
+        position: absolute;
+        top: 3%;
+        right: 3%;
+        font-size: 0.6vw;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #444;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border);
+        padding: 0.3em 0.8em;
+        border-radius: 2px;
+      }
+      .divider {
+        width: 3vw;
+        height: 2px;
+        background: var(--green);
+        margin: 1.2vw 0;
+      }
+      .powerup {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4em;
+        background: linear-gradient(90deg, #0a2a0a, #0d1a0d);
+        border: 1px solid var(--green);
+        border-radius: 2px;
+        padding: 0.3em 0.9em;
+        font-size: 0.65vw;
+        font-weight: 800;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--green);
+        margin-bottom: 1.2vw;
+      }
+      .bullet-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 0.5vw;
+      }
+      .bullet-list li {
+        font-size: 1.425vw;
+        color: #888;
+        padding: 0.35vw 0;
+        display: flex;
+        align-items: center;
+        gap: 0.7vw;
+      }
+      .bullet-list li::before {
+        content: '';
+        display: inline-block;
+        width: 0.4vw;
+        height: 0.4vw;
+        background: var(--green);
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .num-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 0.5vw;
+      }
+      .num-list li {
+        font-size: 1.425vw;
+        color: #888;
+        padding: 0.35vw 0;
+        display: flex;
+        align-items: center;
+        gap: 0.8vw;
+      }
+      .num-list li .n {
+        font-size: 0.8vw;
+        font-weight: 800;
+        color: var(--green);
+        width: 1.2vw;
+        flex-shrink: 0;
+      }
+      .comp-row {
+        display: flex;
+        align-items: center;
+        gap: 0.8%;
+        margin-top: 1.5vw;
+      }
+      .comp-box {
+        flex: 1;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 0.4vw;
+        padding: 2.5% 2%;
+        text-align: center;
+      }
+      .comp-box.green-border {
+        border-color: var(--green);
+      }
+      .comp-box .c-label {
+        font-size: 0.8vw;
+        font-weight: 700;
+        color: #fff;
+      }
+      .comp-box .c-sub {
+        font-size: 0.65vw;
+        color: #555;
+        margin-top: 0.3vw;
+      }
+      .vert-diagram {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        margin-top: 1vw;
+      }
+      .vert-box {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 0.4vw;
+        padding: 0.6vw 1.2vw;
+        font-size: 0.85vw;
+        font-weight: 700;
+        color: #fff;
+        white-space: nowrap;
+      }
+      .vert-box.green-border {
+        border-color: var(--green);
+        color: var(--green);
+      }
+      .vert-arrow {
+        font-size: 1vw;
+        color: #333;
+        margin: 0.2vw 0 0.2vw 0.8vw;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ═══ SLIDE 1 ═══ -->
+    <div
+      class="slide bg-dark"
+      style="flex-direction: row; align-items: stretch"
+    >
+      <div class="col flex1 pad" style="justify-content: center">
+        <div class="tag">CRE Market Reports Agent · 2026</div>
+        <h1>
+          From Walls of Text
+          <br />
+          <span class="green">to Professional Writing</span>
+        </h1>
+        <div class="divider"></div>
+        <p class="detail">
+          V1 Fragmented agent pipeline, lost context at every hand off.
+        </p>
+      </div>
+      <div class="flex1" style="overflow: hidden">
+        <img
+          src="https://raw.githubusercontent.com/jmarlett93/slide-deck/refs/heads/main/slide1.png"
+          style="width: 100%; height: 100%; object-fit: contain"
+        />
+      </div>
+      <div class="slide-num">01 / 15</div>
+    </div>
+    <!-- ═══ SLIDE 2 ═══ -->
+    <div
+      class="slide bg-grid pad"
+      style="flex-direction: row; align-items: stretch; gap: 5%"
+    >
+      <div class="col flex1" style="justify-content: center">
+        <div class="tag">We Iterate</div>
+        <h2>
+          Full Context Agent Was Powerful
+          <br />
+          But Messy.
+        </h2>
+        <div class="divider"></div>
+        <p class="detail">Easier to reason with, still hard to tune.</p>
+      </div>
+      <div class="flex1" style="overflow: hidden; border-radius: 0.4vw">
+        <img
+          class="slide-img"
+          src="https://raw.githubusercontent.com/jmarlett93/slide-deck/refs/heads/main/slide2.png"
+        />
+      </div>
+      <div class="presenter">You</div>
+      <div class="slide-num">02 / 15</div>
+    </div>
+    <!-- ═══ SLIDE 3 ═══ -->
+    <div
+      class="slide bg-dark pad"
+      style="flex-direction: row; align-items: stretch; gap: 5%"
+    >
+      <div class="flex1" style="overflow: hidden; border-radius: 0.4vw">
+        <img
+          class="slide-img"
+          src="https://raw.githubusercontent.com/jmarlett93/slide-deck/refs/heads/main/slide3.png"
+        />
+      </div>
+      <div class="col flex1" style="justify-content: center">
+        <div class="tag">The Problem</div>
+        <h2>
+          What We Tried.
+          <br />
+          <span class="green">What Didn't Work.</span>
+        </h2>
+        <div class="divider"></div>
+        <ul class="bullet-list">
+          <li>Prompt tuning</li>
+          <li>Post processing</li>
+          <li>Customizing downstream</li>
+        </ul>
+      </div>
+      <div class="presenter">You</div>
+      <div class="slide-num">03 / 15</div>
+    </div>
+    <!-- ═══ SLIDE 4 ═══ -->
+    <div class="slide bg-accent col pad">
+      <div class="tag">Our North Star</div>
+      <h2>
+        Three Principles That
+        <br />
+        <span class="green">Changed Everything.</span>
+      </h2>
+      <div class="divider"></div>
+      <div class="row gap2 mt1" style="flex: 1">
+        <div class="p-card">
+          <div class="p-num">01</div>
+          <div class="p-title">Markdown-First for Portability</div>
+          <div class="p-body">
+            Output must travel anywhere without losing fidelity. No proprietary
+            schemas. No lock-in.
+          </div>
+        </div>
+        <div class="p-card">
+          <div class="p-num">02</div>
+          <div class="p-title">Let the LLMs Take the Wheel</div>
+          <div class="p-body">
+            Trust the model to do the heavy lifting. Stop fighting it with
+            rigid, deterministic pipelines.
+          </div>
+        </div>
+        <div class="p-card">
+          <div class="p-num">03</div>
+          <div class="p-title">Fix It at the Root</div>
+          <div class="p-body">
+            Don't clean up output downstream when the real problem is upstream
+            context. Go to the source.
+          </div>
+        </div>
+      </div>
+      <div class="presenter">You</div>
+      <div class="slide-num">04 / 15</div>
+    </div>
+    <!-- ═══ SLIDE 5 — Principle 01 ═══ -->
+    <div
+      class="slide bg-dark pad"
+      style="flex-direction: row; align-items: stretch; gap: 5%"
+    >
+      <div class="col flex1" style="justify-content: center">
+        <div class="tag">Principle 01</div>
+        <h2>
+          Markdown-First
+          <br />
+          <span class="green">for Portability.</span>
+        </h2>
+        <div class="divider"></div>
+        <p class="detail">
+          A portability contract, not just a format choice. The same content
+          renders in the web UI, exports to PDF, and lives as a raw
+          <code style="color: var(--green); font-size: 0.9em">.md</code>
+          file.
+        </p>
+      </div>
+      <div class="flex1" style="overflow: hidden; border-radius: 0.4vw">
+        <img
+          class="slide-img"
+          src="https://raw.githubusercontent.com/jmarlett93/slide-deck/refs/heads/main/slide5.png"
+        />
+      </div>
+      <div class="presenter">You</div>
+      <div class="slide-num">05 / 15</div>
+    </div>
+    <!-- ═══ SLIDE 6 — Principle 02 ═══ -->
+    <div
+      class="slide bg-dark pad"
+      style="flex-direction: row; align-items: stretch; gap: 5%"
+    >
+      <div class="flex1" style="overflow: hidden; border-radius: 0.4vw">
+        <img
+          class="slide-img"
+          src="https://raw.githubusercontent.com/jmarlett93/slide-deck/refs/heads/main/slide6.png"
+        />
+      </div>
+      <div class="col flex1" style="justify-content: center">
+        <div class="tag">Principle 02</div>
+        <h2>
+          Let the LLMs
+          <br />
+          <span class="green">Take the Wheel.</span>
+        </h2>
+        <div class="divider"></div>
+        <p class="detail">
+          We collapsed research and writing into a single high-context LangGraph
+          agent. Whenever we found ourselves adding extra custom logic, we tried
+          to step back and instruct the AI to do it a simpler way.
+        </p>
+      </div>
+      <div class="presenter">You</div>
+      <div class="slide-num">06 / 15</div>
+    </div>
+    <!-- ═══ SLIDE 7 — Principle 03 ═══ -->
+    <div
+      class="slide bg-dark pad"
+      style="flex-direction: row; align-items: stretch; gap: 5%"
+    >
+      <div class="col flex1" style="justify-content: center">
+        <div class="tag">Principle 03</div>
+        <h2>
+          Address It
+          <br />
+          <span class="green">at the Root.</span>
+        </h2>
+        <div class="divider"></div>
+        <p class="detail">
+          When the agent owns full context, it can make better decisions early,
+          and write more coherently later.
+        </p>
+      </div>
+      <div class="flex1" style="overflow: hidden; border-radius: 0.4vw">
+        <img
+          class="slide-img"
+          src="https://raw.githubusercontent.com/jmarlett93/slide-deck/refs/heads/main/slide7.png"
+        />
+      </div>
+      <div class="presenter">You</div>
+      <div class="slide-num">07 / 15</div>
+    </div>
+    <!-- ═══ SLIDE 8 ═══ -->
+    <div
+      class="slide bg-grid pad"
+      style="flex-direction: row; align-items: stretch; gap: 5%"
+    >
+      <div class="flex1" style="overflow: hidden; border-radius: 0.4vw">
+        <img
+          class="slide-img"
+          src="https://raw.githubusercontent.com/jmarlett93/slide-deck/refs/heads/main/slide8.png"
+        />
+      </div>
+      <div class="col flex1" style="justify-content: center">
+        <div class="tag">Design</div>
+        <h2>
+          The Layered
+          <br />
+          <span class="green">Section Design.</span>
+        </h2>
+        <div class="divider"></div>
+        <ol class="num-list">
+          <li>
+            <span class="n">01</span>
+            Theme
+          </li>
+          <li>
+            <span class="n">02</span>
+            Scan
+          </li>
+          <li>
+            <span class="n">03</span>
+            Read
+          </li>
+          <li>
+            <span class="n">04</span>
+            Deep Dive
+          </li>
+        </ol>
+      </div>
+      <div class="presenter">John</div>
+      <div class="slide-num">08 / 15</div>
+    </div>
+    <!-- ═══ SLIDE 9 ═══ -->
+    <div class="slide bg-bold col center pad">
+      <div class="tag">The Reveal</div>
+      <h1 style="font-size: 5vw">See It.</h1>
+      <div class="presenter">Saud</div>
+      <div class="slide-num">09 / 15</div>
+    </div>
+    <!-- ═══ SLIDE 10 ═══ -->
+    <div class="slide bg-accent col pad">
+      <div class="tag">Architecture</div>
+      <h2>
+        How the Stack
+        <span class="green">Actually Stacks.</span>
+      </h2>
+      <div class="divider"></div>
+      <div class="stack-row mt2">
+        <div class="stack-item">
+          <div class="s-label">Writer Agent</div>
+          <div class="s-sub">+ Contour Design System</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="stack-item">
+          <div class="s-label">Markdown-It</div>
+          <div class="s-sub">Custom parser</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="stack-item">
+          <div class="s-label">ProseMirror</div>
+          <div class="s-sub">Editor</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="stack-item" style="border-color: var(--green)">
+          <div class="s-label green">Beautiful Report</div>
+          <div class="s-sub">No duct tape</div>
+        </div>
+      </div>
+      <p class="detail mt2">
+        Each layer is only possible because of the layer beneath it. No
+        workarounds. No duct tape. A stack that earns its complexity.
+      </p>
+      <div class="presenter">Saud</div>
+      <div class="slide-num">10 / 15</div>
+    </div>
+    <!-- ═══ SLIDE 11 ═══ -->
+    <div
+      class="slide bg-dark pad"
+      style="flex-direction: row; align-items: stretch; gap: 5%"
+    >
+      <div class="col flex1" style="justify-content: center">
+        <div class="powerup">⚡ Principle Power-Up</div>
+        <h2>
+          Charts.
+          <br />
+          <span class="green">Delivered Immediately.</span>
+        </h2>
+        <div class="divider"></div>
+        <div class="comp-row">
+          <div class="comp-box green-border">
+            <div class="c-label green">Markdown-Native</div>
+            <div class="c-sub">Mermaid.js chart spec</div>
+          </div>
+          <div class="arrow" style="font-size: 1.2vw">→</div>
+          <div class="comp-box" style="opacity: 0.45; position: relative">
+            <div
+              style="
+                position: absolute;
+                top: -0.6vw;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 0.6vw;
+                color: #555;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+              "
+            >
+              instead of
+            </div>
+            <div class="c-label">Custom Agent</div>
+            <div class="c-sub">+ Schema + UI Component</div>
+          </div>
+        </div>
+      </div>
+      <div class="flex1" style="overflow: hidden; border-radius: 0.4vw">
+        <img
+          class="slide-img"
+          src="https://raw.githubusercontent.com/jmarlett93/slide-deck/refs/heads/main/slide11.png"
+        />
+      </div>
+      <div class="presenter">John</div>
+      <div class="slide-num">11 / 15</div>
+    </div>
+    <!-- ═══ SLIDE 12 ═══ -->
+    <div
+      class="slide bg-dark pad"
+      style="flex-direction: row; align-items: stretch; gap: 3%"
+    >
+      <div class="col" style="justify-content: center; flex: 0 0 38%">
+        <div class="powerup">⚡ Principle Power-Up</div>
+        <h2>
+          The Parser
+          <br />
+          <span class="green">Sets You Free.</span>
+        </h2>
+        <div class="divider"></div>
+      </div>
+      <div class="col flex1" style="justify-content: center">
+        <div class="vert-diagram">
+          <div class="vert-box green-border">Contour-Compliant Markdown</div>
+          <div class="vert-arrow">↓</div>
+          <div class="vert-box">Parser</div>
+          <div class="vert-arrow">↓</div>
+          <div class="vert-box">ProseMirror</div>
+          <div class="vert-arrow">↓</div>
+          <div class="vert-box">Serializer</div>
+          <div class="vert-arrow">↓</div>
+          <div class="vert-box green-border">Contour-Compliant Markdown</div>
+        </div>
+      </div>
+      <div class="presenter">Saud</div>
+      <div class="slide-num">12 / 15</div>
+    </div>
+    <!-- ═══ SLIDE 13 ═══ -->
+    <div class="slide bg-grid col pad" style="justify-content: center">
+      <div class="tag">Product</div>
+      <h2>
+        The Research Site.
+        <br />
+        <span class="green">Here's How We Engage the Market.</span>
+      </h2>
+      <div class="presenter">Joel</div>
+      <div class="slide-num">13 / 15</div>
+    </div>
+    <!-- ═══ SLIDE 14 ═══ -->
+    <div class="slide bg-accent col pad" style="justify-content: center">
+      <div class="tag">Go-to-Market</div>
+      <h2>
+        Here's How
+        <br />
+        <span class="green">We Win the Market.</span>
+      </h2>
+      <div class="presenter">Joel</div>
+      <div class="slide-num">14 / 15</div>
+    </div>
+    <!-- ═══ SLIDE 15 ═══ -->
+    <div class="slide bg-bold col pad" style="justify-content: center">
+      <div class="tag">What We Built</div>
+      <h2 style="font-size: 2.6vw; max-width: 70%">
+        One agent. Full context.
+        <br />
+        <span class="green">Exceptional output.</span>
+      </h2>
+      <div class="divider mt1"></div>
+      <div class="mt1">
+        <div class="win">
+          <div class="win-dot"></div>
+          <p class="white" style="font-size: 0.95vw">
+            Single high-context LangGraph agent — no more handoffs, no more
+            context loss
+          </p>
+        </div>
+        <div class="win">
+          <div class="win-dot"></div>
+          <p class="white" style="font-size: 0.95vw">
+            Markdown-native from model output all the way to rendered UI
+          </p>
+        </div>
+        <div class="win">
+          <div class="win-dot"></div>
+          <p class="white" style="font-size: 0.95vw">
+            Layered section design — scannable and deep
+          </p>
+        </div>
+        <div class="win">
+          <div class="win-dot"></div>
+          <p class="white" style="font-size: 0.95vw">
+            Charts delivered via Mermaid + Catmull-Rom — zero extra
+            infrastructure
+          </p>
+        </div>
+        <div class="win">
+          <div class="win-dot"></div>
+          <p class="white" style="font-size: 0.95vw">
+            Parser separated from ProseMirror — renders everywhere, extensible
+            by anyone
+          </p>
+        </div>
+        <div class="win">
+          <div class="win-dot"></div>
+          <p class="white" style="font-size: 0.95vw">
+            Research site live and ready for market
+          </p>
+        </div>
+      </div>
+      <div class="presenter">You</div>
+      <div class="slide-num">15 / 15</div>
+    </div>
+  </body>
+</html>
